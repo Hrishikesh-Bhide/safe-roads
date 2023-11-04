@@ -5,19 +5,26 @@ import os
 # Load environment variables from .env file
 load_dotenv()
 
-# Get the Google Maps API key from the environment
-api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+with st.sidebar:
 
-# Define the coordinates (latitude and longitude)
-latitude = 37.7749  # Example latitude
-longitude = -122.4194  # Example longitude
+    source_location = st.text_input("Enter Source")
+    destination_location = st.text_input("Enter Destination")
 
-# Create a Google Maps URL with the provided coordinates
-google_maps_url = f"https://www.google.com/maps/embed/v1/place?key={api_key}&q={latitude},{longitude}"
+    find_safe_route = st.button("Submit")
 
-# Display the Google Map in the Streamlit app
-st.title("Google Map Viewer")
+if find_safe_route == True:
+   st.title("Google Map in Streamlit")
 
-st.markdown(f"Latitude: {latitude}, Longitude: {longitude}")
-st.markdown(f"Open the map below:")
-st.markdown(f'<iframe width="100%" height="500" src="{google_maps_url}" frameborder="0" allowfullscreen></iframe>', unsafe_allow_html=True)
+   # Replace 'your_api_key' with your actual Google Maps API key
+   api_key = os.getenv("GOOGLE_MAPS_API_KEY")
+
+   # Define the location and zoom lev
+   latitude = 40.7128
+   longitude = -74.0060
+   zoom_level = 12
+
+   # Create the Google Maps URL
+   google_maps_url = f"https://www.google.com/maps/embed/v1/view?key={api_key}&center={latitude},{longitude}&zoom={zoom_level}"
+
+   # Use an iframe to embed the Google Map
+   st.markdown(f'<iframe src="{google_maps_url}" width="100%" height="500" frameborder="0" style="border:0"></iframe>', unsafe_allow_html=True)
