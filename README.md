@@ -1,7 +1,5 @@
 # Safe Roads - Your Beginner Driver's Companion
 
-![DriveWise Logo](insert-your-logo-url-here)
-
 Safe Roads is a navigation application designed to make driving easier, safer, and more comfortable, especially for beginner drivers. With the "Beginner Driver" feature, it provides routes that prioritize simplicity and safety, avoiding tolls, heavy traffic, accident-prone areas, and pedestrian-congested zones. It's your trusted companion on the road to help you navigate with confidence.
 
 ## Key Features
@@ -30,10 +28,6 @@ We appreciate your input and assistance in making Safe Roads better!
 ## Feedback
 
 If you have any feedback, suggestions, or encounter any issues with Safe Roads, please [open an issue](insert-issue-tracker-link). We value your input and are committed to continually improving our service.
-
-## License
-
-This project is licensed under the [MIT License](insert-license-link).
 
 ---
 
