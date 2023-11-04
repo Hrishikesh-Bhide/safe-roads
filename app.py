@@ -12,13 +12,16 @@ load_dotenv()
 # Get the Google Maps API key from the environment
 api_key = os.getenv("GOOGLE_MAPS_API_KEY")
 
-st.title("Google Maps Path Generator")
+st.title("Safe Roads")
 
-# Input fields for source and destination
-src = st.text_input("Enter source address:")
-dest = st.text_input("Enter destination address:")
+with st.sidebar:
 
-if st.button("Generate Routes"):
+    src = st.text_input("Enter Source")
+    dest = st.text_input("Enter Destination")
+
+    find_safe_route = st.button("Submit")
+
+if find_safe_route == True:
     # Use the Google Directions API to get the path with alternatives
     directions_url = f"https://maps.googleapis.com/maps/api/directions/json"
     params = {
@@ -36,14 +39,6 @@ if st.button("Generate Routes"):
         coordinates_list = []  # List to store route coordinates
 
         for idx, route in enumerate(data["routes"]):
-            st.subheader(f"Route {idx + 1}:")
-            st.write(f"Distance: {route['legs'][0]['distance']['text']}")
-            st.write(f"Duration: {route['legs'][0]['duration']['text']}")
-            st.write("Instructions:")
-            for step in route['legs'][0]['steps']:
-                st.write(step['html_instructions'])
-            st.write("\n")
-
             # Extract the polyline string from the response
             polyline_str = route["overview_polyline"]["points"]
 
