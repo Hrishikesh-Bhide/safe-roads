@@ -4,7 +4,17 @@ from dotenv import load_dotenv
 import os
 import polyline
 import pandas as pd
-from resource.constants import accident_dataset, logo_path, ohio_accident_dataset
+from resource.constants import logo_path, ohio_accident_dataset
+import numpy as np
+
+def color_accident_no(val, q1, median, q3):
+
+    if int(val) >= q3:
+        return f'background-color: {"Red"}'
+    elif int(val) >= median:
+        return f'background-color: {"Orange"}'
+    elif int(val) <= q1:
+        return f'background-color: {"green"}'
 
 # Load environment variables from .env file
 load_dotenv()
@@ -66,7 +76,7 @@ if find_safe_route == True:
                         whole_accident_cordinates.append(cor)
 
             accident_dataframe = {}
-            accident_dataframe["Route No"] = str(idx+1)
+            accident_dataframe["Route No"] = "Route " + str(idx+1)
             #accident_dataframe["Co-ordinates"] = whole_accident_cordinates
             accident_dataframe["No Of Accidents"] = str(len(whole_accident_cordinates))
             whole_accident_dataframe.append(accident_dataframe)
@@ -80,6 +90,13 @@ if find_safe_route == True:
 
         # Display the path with all routes on the map
         st.map(df)
-        st.write(pd.DataFrame(whole_accident_dataframe))
+        whole_accident_dataframe = pd.DataFrame(whole_accident_dataframe)
+        no_accident_list = [int(no) for no in list(whole_accident_dataframe['No Of Accidents'])]
+        q1 = np.percentile(no_accident_list, 25)
+        median = np.percentile(no_accident_list, 50)
+        q3 = np.percentile(no_accident_list, 75)
+        styled_accident_numbers_df = whole_accident_dataframe.style.applymap(lambda x: color_accident_no(x, q1, median, q3),subset='No Of Accidents')
+
+        st.write(styled_accident_numbers_df)
     else:
         st.error("Error: Unable to generate the paths. Please check your input.")
