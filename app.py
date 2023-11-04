@@ -4,8 +4,7 @@ from dotenv import load_dotenv
 import os
 import polyline
 import pandas as pd
-
-from resource.constants import accident_dataset, logo_path
+from resource.constants import accident_dataset, logo_path, ohio_accident_dataset
 
 # Load environment variables from .env file
 load_dotenv()
@@ -15,10 +14,9 @@ st.set_page_config(page_title="Safe Roads", page_icon="🤖", layout="wide")
 # Get the Google Maps API key from the environment
 api_key = os.getenv("GOOGLE_MAPS_API_KEY")
 
-accident_df = pd.read_csv(accident_dataset, nrows=600)
-dataset_start_Lat = [round(acc,2) for acc in list(accident_df['Start_Lat'])]
-dataset_start_Lng = [round(acc,2) for acc in list(accident_df['Start_Lng'])]
-
+ohio_accident_dataset = pd.read_csv(ohio_accident_dataset, nrows=600)
+dataset_start_Lat = [round(acc,2) for acc in list(ohio_accident_dataset['Start_Lat'])]
+dataset_start_Lng = [round(acc,2) for acc in list(ohio_accident_dataset['Start_Lng'])]
 
 with st.sidebar:
     st.title("Safe Roads")
@@ -67,9 +65,6 @@ if find_safe_route == True:
                     if dataset_start_Lng[accident_lat_index] == round(cor[1],2):
                         whole_accident_cordinates.append(cor)
 
-            st.write("Route"+str(idx))
-            st.write(str(len(whole_accident_cordinates)))
-            st.write(whole_accident_cordinates)
             accident_dataframe = {}
             accident_dataframe["Route No"] = str(idx+1)
             #accident_dataframe["Co-ordinates"] = whole_accident_cordinates
@@ -83,7 +78,6 @@ if find_safe_route == True:
         combined_coordinates = [coord for coords in coordinates_list for coord in coords]
         df = pd.DataFrame(combined_coordinates, columns=["LATITUDE", "LONGITUDE"])
 
-        st.write(route_lat)
         # Display the path with all routes on the map
         st.map(df)
         st.write(pd.DataFrame(whole_accident_dataframe))
