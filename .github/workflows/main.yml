@@ -21,10 +21,9 @@ jobs:
     - name: Install Docker
       run: |
         sudo apt-get update
-        sudo apt-get install -y --no-install-recommends docker.io=19.03.6-0ubuntu1.21.10.1
       continue-on-error: true
 
-    - name: Build Docker image
+    - name: Build Docker image for cloud deployment
       run: |
         docker build -t safe-roads:${{ github.sha }} .
         docker tag safe-roads:${{ github.sha }} gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }}
