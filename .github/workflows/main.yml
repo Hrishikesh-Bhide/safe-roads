@@ -36,6 +36,7 @@ jobs:
 
     - name: Configure Docker for Google Container Registry
       run: |
+        gcloud auth login
         gcloud auth configure-docker
 
     - name: Build Docker image
