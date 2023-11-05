@@ -28,26 +28,3 @@ jobs:
       run: |
         docker build -t safe-roads:${{ github.sha }} .
         docker tag safe-roads:${{ github.sha }} gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }}
-
-    - name: Configure Docker for Google Container Registry
-      run: |
-        gcloud auth configure-docker
-      env:
-        CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
-        CLOUDSDK_COMPUTE_ZONE: us-central1
-
-    - name: Push Docker image to Google Container Registry
-      run: |
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }}
-      env:
-        CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
-        CLOUDSDK_COMPUTE_ZONE: us-central1
-
-    - name: Deploy to Google Cloud Run
-      run: |
-        gcloud run deploy safe-roads \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }} \
-          --platform managed
-      env:
-        CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
-        CLOUDSDK_COMPUTE_ZONE: us-central1
