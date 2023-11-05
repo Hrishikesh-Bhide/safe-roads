@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os
 import polyline
 import pandas as pd
-from resource.constants import logo_path, ohio_accident_dataset, hospital_dataset, ohio_hospital_dataset_csv
+from resource.constants import logo_path, ohio_accident_dataset, ohio_hospital_dataset_csv
 import numpy as np
 
 def color_accident_no(val, q1, median, q3):
@@ -14,7 +14,7 @@ def color_accident_no(val, q1, median, q3):
     elif int(val) >= median:
         return f'background-color: {"yellow"}'
     elif int(val) <= q1:
-        return f'background-color: {"green"}'
+        return f'background-color: {"#00FF00"}'
 
 # Load environment variables from .env file
 load_dotenv()
@@ -37,8 +37,9 @@ hospital_lng = ohio_hospital_dataset['LONGITUDE']
 
 
 with st.sidebar:
-    st.title("Safe Roads")
+    st.markdown("<h1 style='text-align: center; color: blue;font-size: 30px;'>Safe Roads</h1>", unsafe_allow_html=True)
     st.image(logo_path, width=250)
+    # Centered image with custom CSS
     src = st.text_input("Enter Source")
     dest = st.text_input("Enter Destination")
 
@@ -63,12 +64,13 @@ if find_safe_route == True:
         accident_dataframe["Route No"] = 0
         #accident_dataframe["Co-ordinates"] = []
         accident_dataframe["No Of Accidents"] = 0
+        accident_dataframe["Description"] = ""
+
 
     if data.get("status") == "OK":
         # Get and display multiple routes
         coordinates_list = []  # List to store route coordinates
 
-        color_list = ['#0000FF', '#FFA500', '#00FF00']
         route_color = []
         for idx, route in enumerate(data["routes"]):
             whole_accident_cordinates = []
@@ -90,6 +92,7 @@ if find_safe_route == True:
             accident_dataframe["Route No"] = "Route " + str(idx+1)
             #accident_dataframe["Co-ordinates"] = whole_accident_cordinates
             accident_dataframe["No Of Accidents"] = str(len(whole_accident_cordinates))
+
             whole_accident_dataframe.append(accident_dataframe)
 
             # Append coordinates to the list
@@ -107,30 +110,24 @@ if find_safe_route == True:
             combined_coordinates.append((lat, lng))
 
         df = pd.DataFrame(combined_coordinates, columns=["LATITUDE", "LONGITUDE"])
-        #df['Color'] = route_color
-
-        # Display the path with all routes on the map
-        #st.map(df, color="Color")
 
         whole_accident_dataframe = pd.DataFrame(whole_accident_dataframe)
         no_accident_list = [int(no) for no in list(whole_accident_dataframe['No Of Accidents'])]
         q1 = np.percentile(no_accident_list, 25)
         median = np.percentile(no_accident_list, 50)
         q3 = np.percentile(no_accident_list, 75)
-        styled_accident_numbers_df = whole_accident_dataframe.style.applymap(lambda x: color_accident_no(x, q1, median, q3),subset='No Of Accidents')
-
+        sorted_df_descending = whole_accident_dataframe.sort_values(by='No Of Accidents', ascending=True)
+        styled_accident_numbers_df = sorted_df_descending.style.applymap(lambda x: color_accident_no(x, q1, median, q3),subset='No Of Accidents')
 
         route_color_map = {}
 
         for k in range(len(whole_accident_dataframe['No Of Accidents'])):
             if int(whole_accident_dataframe['No Of Accidents'][k]) <= q1:
-                route_color_map[whole_accident_dataframe['Route No'][k]] = '#00FF00' # Green
+                route_color_map[whole_accident_dataframe['Route No'][k]] = '#00FF00' #Green
             elif int(whole_accident_dataframe['No Of Accidents'][k]) <= median:
-                route_color_map[whole_accident_dataframe['Route No'][k]] = '#FFFF00' # Yellow
+                route_color_map[whole_accident_dataframe['Route No'][k]] = '#FFFF00' #Yellow
             elif int(whole_accident_dataframe['No Of Accidents'][k]) >= q3:
                 route_color_map[whole_accident_dataframe['Route No'][k]] = '#FFA500' #Orange
-
-        #st.write(route_color_map)
 
         route_color_as_per_level = []
         for idx, route in enumerate(data["routes"]):
@@ -156,7 +153,31 @@ if find_safe_route == True:
 
         # Display the path with all routes on the map
         st.map(df, color="Color")
-        st.write(styled_accident_numbers_df)
-        #st.write(route_color_as_per_level)
+
+        # Create a sample DataFrame
+        data = {
+            'Color': ['#FFA500', '#FFFF00', '#00FF00', '#FF0000', '#0000FF'],
+            'Road Condition': ['Dangerous Road', 'Medium Road', 'Safest Road', 'Accident Spots', 'Hospital Spots']
+        }
+
+        df = pd.DataFrame(data)
+
+        # Define a custom function to apply cell background color
+        def apply_color(val):
+            background_color = f'background-color: {val}'
+            return background_color
+
+        # Apply the custom function to style the DataFrame
+        styled_df = df.style.applymap(apply_color, subset=['Color'])
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+            # Render the styled DataFrame with cell background colors
+            st.subheader("Analysis of Risky Roads")
+            st.write(styled_accident_numbers_df)
+        with col2:
+            st.subheader("Accidence Prone Levels")
+            st.dataframe(styled_df, use_container_width=True)
     else:
         st.error("Error: Unable to generate the paths. Please check your input.")
