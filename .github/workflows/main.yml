@@ -1,4 +1,4 @@
-name: Deploy to Google Cloud
+name: Deploy to Safe Roads on Google Cloud Run
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,39 +18,37 @@ jobs:
       with:
         python-version: 3.x
 
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-
-    - name: Debug secrets
+    - name: Install Docker
       run: |
-        echo "Project ID: ${{ secrets.GCP_PROJECT_ID }}"
-        echo "Service Account Key: ${{ secrets.GCP_SA_KEY }}"
-    
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0
-      with:
-        version: 349.0.0
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
+        sudo apt-get update
+        sudo apt-get install -y docker.io
+      continue-on-error: true
+
+    - name: Build Docker image
+      run: |
+        docker build -t safe-roads:${{ github.sha }} .
+        docker tag safe-roads:${{ github.sha }} gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }}
+      working-directory: path/to/your/app
 
     - name: Configure Docker for Google Container Registry
       run: |
         gcloud auth configure-docker
+      env:
+        CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+        CLOUDSDK_COMPUTE_ZONE: us-central1
 
-    - name: Set up Python 2.7 and Cloud SDK
+    - name: Push Docker image to Google Container Registry
       run: |
-        sudo apt-get update
-        sudo apt-get install python2.7
-        export CLOUDSDK_PYTHON="/usr/bin/python2"
-
-    - name: Build Docker image
-      run: |
-        docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }} .
-        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }}
+        docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }}
+      env:
+        CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+        CLOUDSDK_COMPUTE_ZONE: us-central1
 
     - name: Deploy to Google Cloud Run
       run: |
-        gcloud run deploy my-app \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }} \
+        gcloud run deploy safe-roads \
+          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }} \
           --platform managed
+      env:
+        CLOUDSDK_CORE_PROJECT: ${{ secrets.GCP_PROJECT_ID }}
+        CLOUDSDK_COMPUTE_ZONE: us-central1
