@@ -34,15 +34,16 @@ jobs:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
         export_default_credentials: true
 
-    - name: Configure Docker for Google Container Registry
-      run: |
-        gcloud auth configure-docker
-
     - name: Set up Python 2.7 and Cloud SDK
       run: |
         sudo apt-get update
         sudo apt-get install python2.7
         export CLOUDSDK_PYTHON="/usr/bin/python2"
+    
+    - name: Configure Docker for Google Container Registry
+      run: |
+        gcloud auth configure-docker
+
 
     - name: Build Docker image
       run: |
