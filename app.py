@@ -12,7 +12,7 @@ def color_accident_no(val, q1, median, q3):
     if int(val) >= q3:
         return f'background-color: {"orange"}'
     elif int(val) >= median:
-        return f'background-color: {"#F9E076"}'
+        return f'background-color: {"yellow"}'
     elif int(val) <= q1:
         return f'background-color: {"green"}'
 
@@ -30,6 +30,11 @@ dataset_start_Lng = [round(acc,2) for acc in list(ohio_accident_dataset['Start_L
 
 actual_dataset_start_Lat = [acc for acc in list(ohio_accident_dataset['Start_Lat'])]
 actual_dataset_start_Lng = [acc for acc in list(ohio_accident_dataset['Start_Lng'])]
+
+ohio_hospital_dataset = pd.read_csv(ohio_hospital_dataset_csv)
+hospital_lat = ohio_hospital_dataset['LATITUDE']
+hospital_lng = ohio_hospital_dataset['LONGITUDE']
+
 
 with st.sidebar:
     st.title("Safe Roads")
@@ -93,8 +98,12 @@ if find_safe_route == True:
         # Combine all route coordinates into a single DataFrame
         combined_coordinates = [coord for coords in coordinates_list for coord in coords]
 
+        # Adding Accident Spots
         for lat, lng in zip(actual_dataset_start_Lat, actual_dataset_start_Lng):
-            #route_color.append('#FF0000')
+            combined_coordinates.append((lat, lng))
+
+        # Adding Hospital Spots
+        for lat, lng in zip(hospital_lat, hospital_lng):
             combined_coordinates.append((lat, lng))
 
         df = pd.DataFrame(combined_coordinates, columns=["LATITUDE", "LONGITUDE"])
@@ -117,7 +126,7 @@ if find_safe_route == True:
             if int(whole_accident_dataframe['No Of Accidents'][k]) <= q1:
                 route_color_map[whole_accident_dataframe['Route No'][k]] = '#00FF00' # Green
             elif int(whole_accident_dataframe['No Of Accidents'][k]) <= median:
-                route_color_map[whole_accident_dataframe['Route No'][k]] = '#F9E076' # Yellow
+                route_color_map[whole_accident_dataframe['Route No'][k]] = '#FFFF00' # Yellow
             elif int(whole_accident_dataframe['No Of Accidents'][k]) >= q3:
                 route_color_map[whole_accident_dataframe['Route No'][k]] = '#FFA500' #Orange
 
@@ -135,8 +144,13 @@ if find_safe_route == True:
                 current_route_color = route_color_map["Route " +str(idx+1)]
                 route_color_as_per_level.append(current_route_color)
 
+        # Adding colors for accident spots
         for lat, lng in zip(actual_dataset_start_Lat, actual_dataset_start_Lng):
-            route_color_as_per_level.append('#FF0000')
+            route_color_as_per_level.append('#FF0000') # Red
+
+        # Adding colors for hospital Spots
+        for lat, lng in zip(hospital_lat, hospital_lng):
+            route_color_as_per_level.append('#0000FF') # Blue
 
         df['Color'] = route_color_as_per_level
 
