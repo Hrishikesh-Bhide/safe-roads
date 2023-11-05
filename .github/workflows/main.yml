@@ -36,8 +36,13 @@ jobs:
 
     - name: Configure Docker for Google Container Registry
       run: |
-        gcloud auth login
         gcloud auth configure-docker
+
+    - name: Set up Python 2.7 and Cloud SDK
+      run: |
+        sudo apt-get update
+        sudo apt-get install python2.7
+        export CLOUDSDK_PYTHON="/usr/bin/python2"
 
     - name: Build Docker image
       run: |
