@@ -1,4 +1,4 @@
-# Safe Roads - Your Journey, Your Safety, Your Way
+# Safe-Roads: - Your Journey, Your Safety, Your Way
 
 <p align="center"> <img src="resource/safe_road.png" alt="Safe Roads" width="300" height="300"> </p>
 
