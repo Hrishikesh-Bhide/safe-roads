@@ -28,7 +28,6 @@ jobs:
       run: |
         docker build -t safe-roads:${{ github.sha }} .
         docker tag safe-roads:${{ github.sha }} gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }}
-      working-directory: safe-roads  # Set the working directory to the directory containing your Dockerfile and app.py
 
     - name: Configure Docker for Google Container Registry
       run: |
