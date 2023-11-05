@@ -25,17 +25,12 @@ jobs:
       run: |
         docker build -t gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }} .
         docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }}
-
-    - name: Set up Google Cloud SDK
-      uses: google-github-actions/setup-gcloud@v0
-      with:
-        version: 349.0.0
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        GCR_SERVICE_ACCOUNT_KEY: ${{ secrets.GCR_SERVICE_ACCOUNT_KEY }}
 
     - name: Deploy to Google Cloud Run
-      run: |
-        gcloud run deploy my-app \
-          --image gcr.io/${{ secrets.GCP_PROJECT_ID }}/my-app:${{ github.sha }} \
-          --platform managed
+      run: gcloud run deploy my-service --image gcr.io/$GCP_PROJECT_ID/my-image:latest
+      env:
+        GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        GCR_SERVICE_ACCOUNT_KEY: ${{ secrets.GCR_SERVICE_ACCOUNT_KEY }}
