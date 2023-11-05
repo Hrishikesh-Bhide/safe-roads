@@ -63,6 +63,8 @@ if find_safe_route == True:
         # Get and display multiple routes
         coordinates_list = []  # List to store route coordinates
 
+        color_list = ['#0000FF', '#FFA500', '#00FF00']
+        route_color = []
         for idx, route in enumerate(data["routes"]):
             whole_accident_cordinates = []
             # Extract the polyline string from the response
@@ -73,6 +75,7 @@ if find_safe_route == True:
             route_lat = []
             route_lag = []
             for cor in coordinates:
+                route_color.append(color_list[idx])
                 if dataset_start_Lat.__contains__(round(cor[0],2)) == True:
                     accident_lat_index = dataset_start_Lat.index(round(cor[0],2))
                     if dataset_start_Lng[accident_lat_index] == round(cor[1],2):
@@ -90,7 +93,6 @@ if find_safe_route == True:
         # Combine all route coordinates into a single DataFrame
         combined_coordinates = [coord for coords in coordinates_list for coord in coords]
 
-        route_color = ['#0000FF' for i in range(len(combined_coordinates))]
         for lat, lng in zip(actual_dataset_start_Lat, actual_dataset_start_Lng):
             route_color.append('#FF0000')
             combined_coordinates.append((lat, lng))
@@ -107,7 +109,6 @@ if find_safe_route == True:
         median = np.percentile(no_accident_list, 50)
         q3 = np.percentile(no_accident_list, 75)
         styled_accident_numbers_df = whole_accident_dataframe.style.applymap(lambda x: color_accident_no(x, q1, median, q3),subset='No Of Accidents')
-
         st.write(styled_accident_numbers_df)
     else:
         st.error("Error: Unable to generate the paths. Please check your input.")
