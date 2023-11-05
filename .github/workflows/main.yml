@@ -21,6 +21,11 @@ jobs:
     - name: Install dependencies
       run: pip install -r requirements.txt
 
+    - name: Debug secrets  # Add this step to print the values of secrets
+      run: |
+        echo "Project ID: ${{ secrets.GCP_PROJECT_ID }}"
+        echo "Service Account Key: ${{ secrets.GCP_SA_KEY }}"
+
     - name: Set up Google Cloud SDK
       uses: google-github-actions/setup-gcloud@v0
       with:
