@@ -31,12 +31,12 @@ jobs:
 
     - name: Build Docker image
       run: |
-        docker build -t gcr.io/$GCP_PROJECT_ID/my-app:${{ github.sha }} .
-        docker push gcr.io/$GCP_PROJECT_ID/my-app:${{ github.sha }}
+        docker build -t gcr.io/$GCP_PROJECT_ID/safe-roads:${{ github.sha }} .
+        docker push gcr.io/$GCP_PROJECT_ID/safe-roads:${{ github.sha }}
       env:
         GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Deploy to Google Cloud Run
-      run: gcloud run deploy my-service --image gcr.io/$GCP_PROJECT_ID/my-app:${{ github.sha }}
+      run: gcloud run deploy my-service --image gcr.io/$GCP_PROJECT_ID/safe-roads:${{ github.sha }}
       env:
         GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
