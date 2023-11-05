@@ -28,6 +28,9 @@ ohio_accident_dataset = pd.read_csv(ohio_accident_dataset, nrows=600)
 dataset_start_Lat = [round(acc,2) for acc in list(ohio_accident_dataset['Start_Lat'])]
 dataset_start_Lng = [round(acc,2) for acc in list(ohio_accident_dataset['Start_Lng'])]
 
+actual_dataset_start_Lat = [acc for acc in list(ohio_accident_dataset['Start_Lat'])]
+actual_dataset_start_Lng = [acc for acc in list(ohio_accident_dataset['Start_Lng'])]
+
 with st.sidebar:
     st.title("Safe Roads")
     st.image(logo_path, width=250)
@@ -86,10 +89,18 @@ if find_safe_route == True:
 
         # Combine all route coordinates into a single DataFrame
         combined_coordinates = [coord for coords in coordinates_list for coord in coords]
+
+        route_color = ['#0000FF' for i in range(len(combined_coordinates))]
+        for lat, lng in zip(actual_dataset_start_Lat, actual_dataset_start_Lng):
+            route_color.append('#FF0000')
+            combined_coordinates.append((lat, lng))
+
         df = pd.DataFrame(combined_coordinates, columns=["LATITUDE", "LONGITUDE"])
+        df['Color'] = route_color
 
         # Display the path with all routes on the map
-        st.map(df)
+        st.map(df, color="Color")
+
         whole_accident_dataframe = pd.DataFrame(whole_accident_dataframe)
         no_accident_list = [int(no) for no in list(whole_accident_dataframe['No Of Accidents'])]
         q1 = np.percentile(no_accident_list, 25)
