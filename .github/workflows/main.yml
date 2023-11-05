@@ -21,14 +21,15 @@ jobs:
     - name: Install Docker
       run: |
         sudo apt-get update
-        sudo apt-get install -y docker.io
+        sudo apt-get install -y --no-install-recommends docker.io=19.03.6-0ubuntu1.21.10.1
       continue-on-error: true
 
     - name: Build Docker image
       run: |
+        cd safe-roads  # Change directory to the base directory
         docker build -t safe-roads:${{ github.sha }} .
         docker tag safe-roads:${{ github.sha }} gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }}
-      working-directory: path/to/your/app
+      working-directory: safe-roads  # Set the working directory to the base directory
 
     - name: Configure Docker for Google Container Registry
       run: |
