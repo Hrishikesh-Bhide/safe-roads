@@ -1,5 +1,7 @@
 # Safe Roads - Your Beginner Driver's Companion
 
+![Safe Roads](resource/safe_road.png)
+
 Safe Roads is a navigation application designed to make driving easier, safer, and more comfortable, especially for beginner drivers. With the "Beginner Driver" feature, it provides routes that prioritize simplicity and safety, avoiding tolls, heavy traffic, accident-prone areas, and pedestrian-congested zones. It's your trusted companion on the road to help you navigate with confidence.
 
 ## Key Features
