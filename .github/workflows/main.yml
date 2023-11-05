@@ -39,11 +39,6 @@ jobs:
         sudo apt-get update
         sudo apt-get install python2.7
         export CLOUDSDK_PYTHON="/usr/bin/python2"
-    
-    - name: Configure Docker for Google Container Registry
-      run: |
-        gcloud auth configure-docker
-
 
     - name: Build Docker image
       run: |
