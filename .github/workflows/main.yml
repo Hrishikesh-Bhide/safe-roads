@@ -26,7 +26,6 @@ jobs:
 
     - name: Build Docker image
       run: |
-        cd safe-roads  # Change directory to the base directory
         docker build -t safe-roads:${{ github.sha }} .
         docker tag safe-roads:${{ github.sha }} gcr.io/${{ secrets.GCP_PROJECT_ID }}/safe-roads:${{ github.sha }}
       working-directory: safe-roads  # Set the working directory to the base directory
