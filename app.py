@@ -157,7 +157,7 @@ if find_safe_route == True:
         # Create a sample DataFrame
         data = {
             'Color': ['#FFA500', '#FFFF00', '#00FF00', '#FF0000', '#0000FF'],
-            'Road Condition': ['Dangerous Road', 'Medium Road', 'Safest Road', 'Accident Spots', 'Hospital Spots']
+            'Road Condition': ['Dangerous Route', 'Modarate Risk Route', 'Safe Route', 'Accident Prone Area', 'Hospital']
         }
 
         df = pd.DataFrame(data)
