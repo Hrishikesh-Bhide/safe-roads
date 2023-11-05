@@ -43,7 +43,7 @@ with st.sidebar:
     src = st.text_input("Enter Source")
     dest = st.text_input("Enter Destination")
 
-    find_safe_route = st.button("Submit")
+    find_safe_route = st.button("Get the safe route")
 
 if find_safe_route == True:
     # Use the Google Directions API to get the path with alternatives
@@ -177,7 +177,7 @@ if find_safe_route == True:
             st.subheader("Analysis of Risky Roads")
             st.write(styled_accident_numbers_df)
         with col2:
-            st.subheader("Accidence Prone Levels")
+            st.subheader("Color Guidelines")
             st.dataframe(styled_df, use_container_width=True)
     else:
         st.error("Error: Unable to generate the paths. Please check your input.")
