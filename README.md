@@ -2,7 +2,7 @@
 
 <p align="center"> <img src="resource/safe_road.png" alt="Safe Roads" width="300" height="300"> </p>
 
-Introducing ['Safe-Roads']([URL](https://youtu.be/Zk5dPh88Yqw)) – your reliable guide to smarter, safer journeys. In a world where road safety matters, we're here to make a difference. We're not about predictions; we're about certainty.
+Introducing ['Safe-Roads'](https://youtu.be/Zk5dPh88Yqw) – your reliable guide to smarter, safer journeys. In a world where road safety matters, we're here to make a difference. We're not about predictions; we're about certainty.
 
 Safe-Roads takes a data-driven approach, comparing Kaggle's accident-prone areas with Google Map routes to determine safety levels. Our innovation lies in accuracy. We're all about matching spots and making informed decisions.
 
