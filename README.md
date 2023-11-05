@@ -49,21 +49,24 @@ In summary, Safe-Roads stands out for its commitment to road safety, data-driven
 
 ## Getting Started
 
-To get started with Safe Roads, simply input your source and destination, and we provide safer routes tailored just for you.
+Getting started with Safe-Roads is easy. Just enter your source and destination, and we'll guide you to safer routes customized to your journey. Your safety, your way.
 
 ## What it does
-<p align="center"> <img src="resource/output.png" alt="Web App GUI" width="1200" height="800"> </p>
+
+Discover the capabilities of Safe-Roads:
+
+<p align="center"> <img src="resource/output.png" alt="Web App GUI" width="1000" height="600"> </p>
 <ol>
-<li>Provides safety evaluated route options from source to destination.</li>
-<li>Highlights accident spots on the map.</li>
-<li>Assesses the accident severity level of routes.</li>
-<li>Displays hospital locations on the map.</li>
-<li>Color-codes different routes based on accident severity level.</li>
+<li><b>Safety-Rated Routes:</b> We provide route options evaluated for safety from your source to destination.</li>
+<li><b>Accident Spotlights:</b> Easily identify accident-prone areas on the map.</li>
+<li><b>Route Safety Assessment:</b> We assess and categorize routes by accident severity level.</li>
+<li><b>Hospital Locations:</b> Find nearby hospital locations conveniently marked on the map.</li>
+<li><b>Color-Coded Routes:</b> Routes are color-coded to reflect their accident severity levels, ensuring you make informed decisions.</li>
 </ol>
 
 ## How we built it
 
-<p align="center"> <img src="resource/MakeUC2023_1.png" alt="Architecture Flow" width="1200" height="800"> </p>
+<p align="center"> <img src="resource/MakeUC2023_1.png" alt="Architecture Flow" width="1000" height="400"> </p>
 <ol>
 <li>Activated the Google Map API Key.</li>
 <li>Created a GitHub repository.</li>
@@ -86,23 +89,37 @@ To get started with Safe Roads, simply input your source and destination, and we
 </ol>
    
 ## Challenges we ran into
+
+In our journey with Safe-Roads, we encountered and successfully conquered a range of challenges:
+
 <ol>
-<li>Difficulty activating Google Cloud Account. </li>
-<li>Challenges activating Domain Account.</li>
-<li>Complex understanding of Google Map integration in Streamlit.</li>
-<li>Issues encountered while handling large datasets in Streamlit.</li>
+<li><b>Google Cloud Account Activation:</b> Overcoming hurdles in activating our Google Cloud account was pivotal in gaining access to crucial resources.</li>
+<li><b>Domain Account Activation:</b> We navigated the intricacies of activating our domain account, ensuring a seamless online presence for our project.</li>
+<li><b>Google Map Integration:</b> Tackling the complexity of integrating Google Maps into Streamlit required dedication, but we emerged with valuable expertise.</li>
+<li><b>Handling Large Datasets:</b> Dealing with large datasets in Streamlit was no small feat, but we optimized our processes to ensure smooth data management.</li>
+</ol>
+These challenges reinforced our commitment to Safe-Roads and underscored the importance of perseverance and adaptability in problem-solving.
+
+## Key Takeaways
+Our journey with Safe-Roads has been a learning experience filled with valuable insights:
+
+<ol>
+<li><b>User-Centric Development:</b> Our project's user-centered approach ensures that safety and convenience are at the forefront of our design.</li>
+<li><b>Data-Driven Decision-Making:</b> We've harnessed data analytics to make road safety recommendations based on actual accident-prone areas, promoting informed choices.</li>
+<li><b>Google Maps Integration:</b> We successfully integrated Google Maps into Streamlit, broadening our technical skills.</li>
+<li><b>Versatile Functionalities:</b> We delved into the diverse capabilities of Google Maps within the Streamlit platform, including the use of polylines and more.</li>
+<li><b>Collaboration and Innovation:</b> Our experience demonstrates the power of collaboration and innovation in addressing real-world issues and making a positive impact.</li>
 </ol>
 
-## What we learned
-We learned how to integrate Google Maps into the Streamlit platform, expanding our expertise beyond the Android Studio. We explored various functionalities of Google Maps within Streamlit, including polylines and more.
+These takeaways reflect our growth, resilience, and dedication to making road travel safer for everyone.
 
 ## What's next for Safe Roads
 
 <ol>
-<li>Providing safe road suggestions based on the time of day.</li>
-<li>Developing a mobile app.</li>
-<li>Assessing driving skills and offering safe road suggestions based on individual driving skills.</li>
-<li>Potential expansion to include additional safety features, such as weather alerts and road condition reports, enhancing its value to users.</li>
+<li><b>Time-Based Safety:</b> Enhancing safety with road suggestions tailored to the time of day.</li>
+<li><b>Mobile App Development:</b> Bringing safety on the go with our upcoming mobile app.</li>
+<li><b>Personalized Safety:</b> Assessing your driving skills to offer customized road recommendations.</li>
+<li><b>Expanded Safety Features:</b> Exploring options like weather alerts and road condition reports for a more comprehensive experience.</li>
 </ol>
 
 
