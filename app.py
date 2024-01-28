@@ -66,8 +66,8 @@ if find_safe_route == True:
         if conn:
             try:
                 cur = conn.cursor()
-                db.create_tables(cur)
-                db.insert_data(cur)
+                #db.create_tables(cur, conn)
+                #db.insert_data(cur, conn)
                 accident_data = db.get_accident_data_from_database(cur)
                 hospital_data = db.get_hospital_data_from_database(cur)
                 cur.close()
