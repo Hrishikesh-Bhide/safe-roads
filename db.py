@@ -11,7 +11,6 @@ def connect_to_database(conn_str):
         print(f"Unable to connect to the database: {e}")
         return None
 
-
 def create_tables(cur):
     try:
         # Test Query
@@ -20,7 +19,6 @@ def create_tables(cur):
         cur.execute("CREATE TABLE Hospital_Original (hospital_id INT PRIMARY KEY, Start_Lat FLOAT, Start_Lng FLOAT)")
     except Exception as e:
         print(f"An error occurred while creating tables: {e}")
-
 
 def insert_data(cur):
     ohio_accident_dataset = pd.read_csv(ohio_accident_dataset_csv, nrows=600)
@@ -48,7 +46,6 @@ def insert_data(cur):
     except Exception as e:
         print(f"An error occurred during data insertion: {e}")
 
-
 def fetch_data(cur):
     try:
         cur.execute("Select * From Accident_Round")
@@ -63,28 +60,20 @@ def fetch_data(cur):
     except Exception as e:
         print(f"An error occurred during data fetching: {e}")
 
+def get_accident_data_from_database(cur):
+    try:
+        cur.execute("SELECT Start_Lat, Start_Lng FROM Accident_Round")
+        result = cur.fetchall()
+        return result
+    except Exception as e:
+        print(f"Error retrieving accident data: {e}")
+        return []
 
-if __name__ == "__main__":
-    conn_str = 'postgresql://postgres:cq1bzqXnNuMNrF0s@org-zenith-inst-safe-roads.data-1.use1.tembo.io:5432/postgres'
-    conn = connect_to_database(conn_str)
-
-    if conn:
-        try:
-            # Create a new cursor object.
-            cur = conn.cursor()
-
-            # Create tables
-            create_tables(cur)
-
-            # Insert data
-            insert_data(cur)
-
-            # Fetch data
-            fetch_data(cur)
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
-        finally:
-            # Close communication with the database
-            cur.close()
-            conn.close()
+def get_hospital_data_from_database(cur):
+    try:
+        cur.execute("SELECT Start_Lat, Start_Lng FROM Hospital_Original")
+        result = cur.fetchall()
+        return result
+    except Exception as e:
+        print(f"Error retrieving hospital data: {e}")
+        return []

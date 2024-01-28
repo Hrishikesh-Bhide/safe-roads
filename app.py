@@ -1,3 +1,4 @@
+import db
 import streamlit as st
 import requests
 from dotenv import load_dotenv
@@ -23,18 +24,6 @@ st.set_page_config(page_title="Safe Roads", page_icon="🤖", layout="wide")
 
 # Get the Google Maps API key from the environment
 api_key = os.getenv("GOOGLE_MAPS_API_KEY")
-
-ohio_accident_dataset = pd.read_csv(ohio_accident_dataset, nrows=600)
-dataset_start_Lat = [round(acc,2) for acc in list(ohio_accident_dataset['Start_Lat'])]
-dataset_start_Lng = [round(acc,2) for acc in list(ohio_accident_dataset['Start_Lng'])]
-
-actual_dataset_start_Lat = [acc for acc in list(ohio_accident_dataset['Start_Lat'])]
-actual_dataset_start_Lng = [acc for acc in list(ohio_accident_dataset['Start_Lng'])]
-
-ohio_hospital_dataset = pd.read_csv(ohio_hospital_dataset_csv)
-hospital_lat = ohio_hospital_dataset['LATITUDE']
-hospital_lng = ohio_hospital_dataset['LONGITUDE']
-
 
 with st.sidebar:
     st.markdown("<h1 style='text-align: center; color: blue;font-size: 30px;'>Safe Roads</h1>", unsafe_allow_html=True)
@@ -70,6 +59,30 @@ if find_safe_route == True:
     if data.get("status") == "OK":
         # Get and display multiple routes
         coordinates_list = []  # List to store route coordinates
+
+        conn_str = 'postgresql://postgres:cq1bzqXnNuMNrF0s@org-zenith-inst-safe-roads.data-1.use1.tembo.io:5432/postgres'
+        conn = db.connect_to_database(conn_str)
+
+        if conn:
+            try:
+                cur = conn.cursor()
+                db.create_tables(cur)
+                db.insert_data(cur)
+                accident_data = db.get_accident_data_from_database(cur)
+                hospital_data = db.get_hospital_data_from_database(cur)
+                cur.close()
+                conn.close()
+            except Exception as e:
+                st.error(f"An error occurred: {e}")
+
+        dataset_start_Lat = [acc[0] for acc in accident_data]
+        dataset_start_Lng = [acc[1] for acc in accident_data]
+        
+        actual_dataset_start_Lat = [acc[0] for acc in accident_data]
+        actual_dataset_start_Lng = [acc[1] for acc in accident_data]
+
+        hospital_lat = [lat[0] for lat in hospital_data]
+        hospital_lng = [lng[1] for lng in hospital_data]
 
         route_color = []
         for idx, route in enumerate(data["routes"]):
