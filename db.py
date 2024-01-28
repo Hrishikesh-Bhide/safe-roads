@@ -11,16 +11,17 @@ def connect_to_database(conn_str):
         print(f"Unable to connect to the database: {e}")
         return None
 
-def create_tables(cur):
+def create_tables(cur, conn):
     try:
         # Test Query
         cur.execute("CREATE TABLE Accident_Original(acc_id INT PRIMARY KEY, Start_Lat FLOAT, Start_Lng FLOAT)")
         cur.execute("CREATE TABLE Accident_Round (acc_id INT PRIMARY KEY, Start_Lat FLOAT, Start_Lng FLOAT)")
         cur.execute("CREATE TABLE Hospital_Original (hospital_id INT PRIMARY KEY, Start_Lat FLOAT, Start_Lng FLOAT)")
+        conn.commit()
     except Exception as e:
         print(f"An error occurred while creating tables: {e}")
 
-def insert_data(cur):
+def insert_data(cur, conn):
     ohio_accident_dataset = pd.read_csv(ohio_accident_dataset_csv, nrows=600)
     actual_dataset_start_Lat = [acc for acc in list(ohio_accident_dataset['Start_Lat'])]
     actual_dataset_start_Lng = [acc for acc in list(ohio_accident_dataset['Start_Lng'])]
@@ -43,22 +44,9 @@ def insert_data(cur):
             i += 1
 
         print("Data inserted successfully.")
+        conn.commit()
     except Exception as e:
         print(f"An error occurred during data insertion: {e}")
-
-def fetch_data(cur):
-    try:
-        cur.execute("Select * From Accident_Round")
-        accident_output = cur.fetchall()
-        print("Accident Data:")
-        print(accident_output)
-
-        cur.execute("Select * From Hospital_Original")
-        hospital_output = cur.fetchall()
-        print("Hospital Data:")
-        print(hospital_output)
-    except Exception as e:
-        print(f"An error occurred during data fetching: {e}")
 
 def get_accident_data_from_database(cur):
     try:
