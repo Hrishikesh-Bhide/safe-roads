@@ -7,6 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
+    if: false  # This prevents the job from running
     runs-on: ubuntu-latest
 
     steps:
